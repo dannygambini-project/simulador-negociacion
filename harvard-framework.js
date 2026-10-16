@@ -98,61 +98,61 @@ const HARVARD_GUIDE_DATA = {
         },
         {
           name: "Tabúes (Taboos)",
-          desc: "Temas o condiciones no dichas que bloquean el avance por miedo a ofender. Rompe el tabú con empatía y preguntas exploratorias abiertas."
+          desc: "Temas o inquietudes implícitas que ninguna parte se atreve a nombrar (ej. miedo a la insolvencia o desconfianza en la entrega remota). Ponerlos con tacto sobre la mesa genera alivio."
         },
         {
           name: "Asalto a lo Sagrado (Assault on the Sacred)",
-          desc: "Atacar valores no negociables de la contraparte (como la soberanía de marca o la reputación ante su junta directiva)."
+          desc: "Cuestionar o atacar valores intocables, como la reputación institucional o la ética empresarial de la otra parte. Destruye de inmediato la mesa de diálogo."
         },
         {
-          name: "Trampa de Identidad (Identity Politics)",
-          desc: "Atrincherarse en prejuicios nacionales o corporativos en lugar de buscar la solución óptima del proyecto conjunto."
+          name: "Política de Identidad (Identity Politics)",
+          desc: "Atribuir intenciones maliciosas al comprador por ser de otra cultura corporativa o nacional ('los compradores siempre quieren aprovecharse'). Mantén una postura profesional y basada en hechos."
         }
       ]
     },
 
     {
       number: 4,
-      title: "Modelos B.R.A.V.E. y H.E.L.P.S. de Comunicación",
-      framework: "Interpersonal & Cross-Cultural Communication Frameworks",
-      color: "#06b6d4",
-      icon: "🌐",
-      summary: "Metodologías estructuradas para diagnosticar la postura del comprador internacional y comunicar contraofertas complejas con elegancia y firmeza.",
+      title: "Identidad y Comunicación: Marcos B.R.A.V.E. y H.E.L.P.S.",
+      framework: "BRAVE & HELPS Interpersonal Communication Model",
+      color: "#8b5cf6",
+      icon: "🤝",
+      summary: "Herramientas prácticas para gestionar la comunicación intercultural en exportaciones y alinear voluntades en momentos de alta tensión.",
       keyPrinciples: [
         {
-          name: "Modelo B.R.A.V.E.",
-          desc: "Beliefs (Creencias previas), Rituals (Formatos y protocolos de reunión), Assumptions (Supuestos no verificados), Values (Valores comerciales centrales) y Expectations (Expectativas de entrega y pago)."
+          name: "Marco B.R.A.V.E. (Diagnóstico de Identidad)",
+          desc: "Beliefs (Creencias sobre el negocio), Rituals (Formatos habituales de contratación corporativa), Allegiances (Lealtades con sus directores o accionistas), Values (Valores de calidad y sostenibilidad), Emotionally charged experiences (Experiencias previas con proveedores fallidos)."
         },
         {
-          name: "Modelo H.E.L.P.S.",
-          desc: "Hear (Escucha activa sin interrumpir), Empathize (Comprende su dolor financiero), Legitimize (Valida sus argumentos legítimos), Problem-solve (Co-crea la solución) y Synthesize (Resume acuerdos por escrito)."
+          name: "Marco H.E.L.P.S. (Estrategia Activa de Escucha)",
+          desc: "• Hear (Escuchar sin interrumpir)\n• Empathize (Validar la presión que enfrenta el comprador)\n• Learn (Indagar qué variable es verdaderamente crítica para él)\n• Problem-solve (Cocreas soluciones de contingencia)\n• Synthesize (Resumir acuerdos parciales para consolidar avances)"
         }
       ]
     },
 
     {
       number: 5,
-      title: "Valor Objetivo vs. Valor Subjetivo (SPOV)",
-      framework: "Subjective & Objective Value in Negotiation (Curhan et al. / Harvard)",
-      color: "#8b5cf6",
+      title: "Safari Zone: Valor Objetivo vs. Valor Subjetivo",
+      framework: "Subjective & Objective Value in Negotiation (SPOV)",
+      color: "#06b6d4",
       icon: "💎",
-      summary: "La rentabilidad financiera (Valor Objetivo) sólo perdura si ambas partes quedan con una sensación de justicia, dignidad y ganas de trabajar juntas (Valor Subjetivo).",
+      summary: "Un acuerdo excelente en el papel (alto margen) puede ser un fracaso si destruye el 'Valor Subjetivo'. El libro de Harvard enseña que las relaciones comerciales duraderas requieren que ambas partes salgan con la sensación de haber sido tratadas con justicia, respeto y honestidad.",
       keyPrinciples: [
         {
-          name: "Sentimientos sobre el Resultado",
-          desc: "¿Ambas partes perciben el acuerdo como justo, balanceado y defendible ante sus respectivas organizaciones?"
+          name: "Valor Objetivo (Objective Value)",
+          desc: "Las métricas cuantificables de la transacción: precio de venta, plazo de pago en días, porcentaje de anticipo, meses de garantía, penalidades y retención de propiedad intelectual."
         },
         {
-          name: "Sentimientos sobre el Propio Ser",
-          desc: "¿Se negoció con integridad, profesionalismo y defendiendo los principios de la empresa sin capitular ni abusar?"
+          name: "Sentimientos sobre el Resultado",
+          desc: "¿Siente el comprador que el trato es justo y defendible ante sus superiores? ¿Siente el exportador peruano que sus costos directos y nóminas están a salvo?"
         },
         {
           name: "Sentimientos sobre el Proceso",
-          desc: "¿El proceso fue transparente, respetuoso de los tiempos y constructivo, o hubo trampas y tácticas de desgaste?"
+          desc: "¿Fue un proceso transparente, ágil y colaborativo, o hubo presiones excesivas, juegos de poder y amenazas de romper?"
         },
         {
           name: "Sentimientos sobre la Relación",
-          desc: "¿Se construyó una base sólida para renovar contratos y expandir el negocio en el mediano y largo plazo?"
+          desc: "¿Desean volver a trabajar juntos en el siguiente contrato? El 70% de las exportaciones peruanas rentables provienen de recompras y relaciones de largo plazo."
         }
       ]
     }
@@ -160,30 +160,60 @@ const HARVARD_GUIDE_DATA = {
 };
 
 /**
- * Entrega un consejo metodológico de Harvard adaptado a la variable en discusión.
+ * Provee consejos tácticos en tiempo real para el paso a paso del wizard,
+ * contextualizados con el marco del PDF de Harvard.
  */
 function getHarvardTipForStep(variableId, scenario) {
-  if (variableId.includes("price") || variableId.includes("fee") || variableId.includes("rate") || variableId.includes("retainer")) {
+  // 1. Precios / Tarifas / Garantía Mínima
+  if (variableId.includes("rate") || variableId.includes("price") || variableId.includes("fee") || variableId.includes("guarantee") || variableId.includes("premium")) {
     return {
       chapter: "Cap. 1: Criterios Objetivos & Separar Intereses de Posiciones",
-      text: "No justifiques tu precio por 'necesidad interna'. Utiliza estándares objetivos del sector (ej. tarifas del Perú Service Summit o cotizaciones benchmark de la región). Defiende tu valor técnico con legitimidad."
+      text: "No justifiques tu tarifa en 'lo que necesitas ganar', sino en estándares externos legítimos (productividad del squad, certificaciones orgánicas o tarifas reportadas en el Perú Service Summit). Si el comprador te pide rebaja, no cedas gratis: vincula cada reducción a un beneficio recíproco.",
+      coreConcern: "Estatus & Aprecio: Valora el presupuesto del cliente y resalta con serenidad la solvencia técnica peruana."
     };
   }
-  if (variableId.includes("advance") || variableId.includes("payment")) {
+  
+  // 2. Anticipo / Flujo de Caja
+  if (variableId.includes("advance")) {
     return {
-      chapter: "Cap. 2: Atender la Preocupación de Autonomía y Aliviar Riesgo",
-      text: "El comprador internacional busca mitigar su exposición financiera ante su corporativo. Ofrecer hitos verificables de entrega o garantías técnicas ayuda a destrabar pagos a menor plazo."
+      chapter: "Cap. 4: Marco H.E.L.P.S. (Problem-Solving Colaborativo)",
+      text: "El comprador teme financiarte a ciegas; tú necesitas liquidez para pagar sueldos quincenales en Lima sin endeudarte al 9.5% bancario. Plantea el anticipo no como una exigencia, sino como la garantía de movilización inmediata y retención exclusiva de los mejores ingenieros.",
+      coreConcern: "Autonomía: Ofrece alternativas de desembolso por hitos para que el comprador sienta control."
     };
   }
-  if (variableId.includes("ip") || variableId.includes("liability") || variableId.includes("exclusivity")) {
+  
+  // 3. Plazos de Pago (Crédito en días)
+  if (variableId.includes("payment_term") || variableId.includes("payment_method") || variableId.includes("payment_terms")) {
     return {
-      chapter: "Cap. 1 & 5: Opciones de Beneficio Mutuo y Protección de Activos",
-      text: "No aceptes cláusulas absolutas ('todo o nada'). Aplica la técnica de 'acotar el alcance': delimita exclusividades a competidores directos o restringe licencias de propiedad intelectual al código a medida sin ceder tus librerías base."
+      chapter: "Cap. 2: Afiliación y Cooperación Financiera",
+      text: "Las corporaciones extranjeras suelen tener políticas rígidas de 60 días. Evita el 'choque frontal' (Señuelo del Vértigo). Si reduces los días a 30, explícale que ese alivio en tu capital de trabajo te permite mantener precios congelados y soporte continuo.",
+      coreConcern: "Afiliación: Construye la narrativa de que una tesorería sana del exportador garantiza entregas a tiempo para el comprador."
     };
   }
+  
+  // 4. Garantías / SLA / Tiempos de Entrega
+  if (variableId.includes("warranty") || variableId.includes("sla") || variableId.includes("delivery") || variableId.includes("timeline")) {
+    return {
+      chapter: "Cap. 1: Opciones de Beneficio Mutuo (Crear Valor)",
+      text: "Limitar el periodo de soporte gratuito no significa desproteger al cliente. Propón un periodo de garantía de 3-4 meses para fallas críticas y un esquema de horas bolsa para evolutivos adicionales.",
+      coreConcern: "Rol: Define con nitidez el rol de tu equipo técnico para evitar ambigüedades posteriores."
+    };
+  }
+  
+  // 5. Propiedad Intelectual / Cláusulas Legales
+  if (variableId.includes("ip") || variableId.includes("liability") || variableId.includes("territorial") || variableId.includes("exclusivity")) {
+    return {
+      chapter: "Cap. 3: Identificar Tabúes y Proteger lo Estratégico",
+      text: "La propiedad de tus librerías y activos preexistentes es un activo sagrado de la empresa peruana. Ceder el código custom pero reservar tus frameworks base ('custom_code_only') es la solución recomendada por la OMPI y el ITC.",
+      coreConcern: "Autonomía & Legitimidad: Protege tu capacidad de comercializar futuros servicios en otros países."
+    };
+  }
+
+  // Default
   return {
-    chapter: "Cap. 4: Metodología H.E.L.P.S. de Co-creación",
-    text: "Enfoca la propuesta como una solución de ingeniería comercial en beneficio mutuo. Pregúntate qué variable tiene bajo costo marginal para ti pero alto valor percibido para la contraparte."
+    chapter: "Cap. 5: Valor Objetivo vs. Valor Subjetivo",
+    text: "Busca un equilibrio donde ambos ganen: cuida los números y cuida al mismo tiempo la relación personal y la confianza con la contraparte.",
+    coreConcern: "Respeto mutuo y profesionalismo internacional."
   };
 }
 

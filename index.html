@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulador de Negociación Internacional para Exportadores Peruanos</title>
+  <meta name="description" content="Plataforma interactiva para el entrenamiento de exportadores peruanos en negociaciones comerciales internacionales con compradores extranjeros.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ==================== HEADER PRINCIPAL ==================== -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand-wrapper">
+        <span class="brand-badge">PERÚ EXPORT</span>
+        <div>
+          <h1 class="brand-title">Simulador de Negociación Internacional</h1>
+          <span class="brand-subtitle">Entrenamiento Individual para Exportadores Peruanos</span>
+        </div>
+      </div>
+
+      <nav class="main-nav" aria-label="Navegación principal">
+        <button id="nav-btn-dashboard" class="nav-btn active" data-view="dashboard">
+          <span>📊</span> Dashboard
+        </button>
+        <button id="nav-btn-catalog" class="nav-btn" data-view="catalog">
+          <span>📂</span> Catálogo de Casos
+        </button>
+        <button id="nav-btn-harvard" class="nav-btn" data-view="harvard">
+          <span>📘</span> Guía Harvard
+        </button>
+        <button id="nav-btn-room" class="nav-btn" data-view="room" style="display: none;">
+          <span>🤝</span> Sala de Negociación
+        </button>
+        <button id="nav-btn-report" class="nav-btn" data-view="report" style="display: none;">
+          <span>📋</span> Informe de Evaluación
+        </button>
+        <button id="nav-btn-sources" class="nav-btn" data-view="sources">
+          <span>📚</span> Biblioteca de Fuentes
+        </button>
+      </nav>
+
+      <div class="header-actions">
+        <!-- Selector de Tema Día / Noche -->
+        <button id="theme-toggle-btn" class="theme-toggle-btn" onclick="app.toggleTheme()" title="Cambiar a Modo Día (Claro) o Modo Noche (Oscuro)" aria-label="Cambiar tema Día / Noche">
+          <span class="theme-icon sun-icon" id="theme-icon-sun">☀️</span>
+          <span class="theme-icon moon-icon" id="theme-icon-moon" style="display: none;">🌙</span>
+          <span class="theme-label" id="theme-label">Modo Día</span>
+        </button>
+        <div id="active-mode-pill" class="mode-indicator-pill" title="La contraparte opera bajo el motor determinista de reglas fijas">
+          <span class="mode-dot"></span>
+          <span id="active-mode-label">Motor Reglas Fijas</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== CONTENEDOR PRINCIPAL DE VISTAS ==================== -->
+  <main class="main-content">
+
+    <!-- ========== 1. VISTA: DASHBOARD ========== -->
+    <section id="view-dashboard" class="view-section active">
+      <div class="hero-banner">
+        <div class="hero-text">
+          <span class="section-tag">PROGRAMA DE CAPACITACIÓN AVANZADA</span>
+          <h2>Domina las Negociaciones Comerciales Internacionales</h2>
+          <p>
+            Entrena como exportador peruano frente a contrapartes internacionales simuladas. Pon a prueba tus habilidades de fijación de precios, defensa de márgenes, mitigación de riesgos cambiarios e Incoterms basándote en casos reales documentados por PROMPERÚ, el ITC de Naciones Unidas y la OMPI.
+          </p>
+        </div>
+        <div class="hero-actions">
+          <button id="btn-hero-explore" class="btn btn-primary" onclick="app.navigateTo('catalog')">
+            Explorar Catálogo de Casos ➔
+          </button>
+        </div>
+      </div>
+
+      <div class="section-header">
+        <span class="section-tag">MÉTRICAS DEL PARTICIPANTE</span>
+        <h3 class="section-title">Tu Progreso de Entrenamiento</h3>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-header">
+            <span class="stat-label">Negociaciones Completadas</span>
+            <span class="stat-icon">🎯</span>
+          </div>
+          <div id="stat-total-sessions" class="stat-value">0</div>
+          <div class="stat-subtext">Sesiones registradas en el sistema</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <span class="stat-label">Puntaje Promedio</span>
+            <span class="stat-icon">⭐</span>
+          </div>
+          <div id="stat-avg-score" class="stat-value">0 <span style="font-size: 1rem; color: var(--text-dim);">/ 100</span></div>
+          <div class="stat-subtext">Rendimiento integral ponderado</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <span class="stat-label">Acuerdos Concretados</span>
+            <span class="stat-icon">🤝</span>
+          </div>
+          <div id="stat-deals-closed" class="stat-value">0</div>
+          <div class="stat-subtext">En zona de posible acuerdo (ZOPA)</div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <span class="stat-label">Retiros Estratégicos (BATNA)</span>
+            <span class="stat-icon">🛡️</span>
+          </div>
+          <div id="stat-walkaways" class="stat-value">0</div>
+          <div class="stat-subtext">Protección frente a acuerdos destructivos</div>
+        </div>
+      </div>
+
+      <div class="section-header">
+        <span class="section-tag">HISTORIAL RECIENTE</span>
+        <h3 class="section-title">Últimas Sesiones Realizadas</h3>
+      </div>
+      <div id="dashboard-history-container" class="concessions-table-card">
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Escenario</th>
+                <th>País Comprador</th>
+                <th>Modalidad</th>
+                <th>Resultado</th>
+                <th>Puntuación</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody id="dashboard-history-tbody">
+              <tr>
+                <td colspan="7" style="text-align: center; color: var(--text-dim); padding: 2rem;">
+                  Aún no has completado ninguna negociación. ¡Comienza explorando el catálogo de escenarios!
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 2. VISTA: CATÁLOGO DE ESCENARIOS ========== -->
+    <section id="view-catalog" class="view-section">
+      <div class="section-header">
+        <span class="section-tag">CATÁLOGO DE CASOS DOCUMENTADOS</span>
+        <h2 class="section-title">Escenarios de Negociación Internacional</h2>
+        <p class="section-desc">
+          Casos rigurosamente sustentados en fuentes públicas del Centro de Comercio Internacional (ITC), PROMPERÚ, la OMPI y el Programa de Negociación de Harvard. Cada escenario distingue hechos documentados de parámetros didácticos.
+        </p>
+      </div>
+
+      <!-- Filtros -->
+      <div class="catalog-filters">
+        <div class="filter-group">
+          <label for="filter-sector" class="filter-label">Sector Económico</label>
+          <select id="filter-sector" class="filter-select">
+            <option value="all">Todos los sectores</option>
+            <option value="software">Software y Servicios Digitales</option>
+            <option value="audiovisual">Producción Audiovisual y Animación</option>
+            <option value="videojuegos">Videojuegos y Licenciamiento</option>
+            <option value="agroexport">Agroexportación Sostenible</option>
+            <option value="marketing">Marketing Digital y Publicidad</option>
+            <option value="consulting">Consultoría e Ingeniería Especializada</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="filter-difficulty" class="filter-label">Nivel de Dificultad</label>
+          <select id="filter-difficulty" class="filter-select">
+            <option value="all">Todas las dificultades</option>
+            <option value="Principiante">Principiante</option>
+            <option value="Intermedio">Intermedio</option>
+            <option value="Avanzado">Avanzado</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="search-scenario" class="filter-label">Buscar por palabra clave</label>
+          <input type="text" id="search-scenario" class="search-input" placeholder="Ej. Chile, Cacao, MG, Software...">
+        </div>
+      </div>
+
+      <!-- Grid de Escenarios -->
+      <div id="scenarios-grid-container" class="scenarios-grid">
+        <!-- Renderizado dinámico desde app.js -->
+      </div>
+    </section>
+
+    <!-- ========== 3. VISTA: FICHA DEL CASO / BRIEFING PREVIO ========== -->
+    <section id="view-briefing" class="view-section">
+      <div class="section-header">
+        <button class="btn btn-secondary" onclick="app.navigateTo('catalog')" style="margin-bottom: 0.75rem;">
+          ← Volver al Catálogo
+        </button>
+        <span id="briefing-scenario-id" class="section-tag">SCN-00</span>
+        <h2 id="briefing-title" class="section-title">Título del Escenario</h2>
+      </div>
+
+      <div class="briefing-layout">
+        <!-- Columna Izquierda: Información Documentada y Objetivos -->
+        <div class="briefing-main-card">
+          <div style="margin-bottom: 1.5rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: #fff; margin-bottom: 0.5rem;">Contexto Comercial y Antecedentes Documentados</h3>
+            <p id="briefing-context" style="color: #cbd5e1; font-size: 0.92rem; line-height: 1.6;"></p>
+          </div>
+
+          <div style="margin-bottom: 1.5rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: #fff; margin-bottom: 0.5rem;">Objetivo Pedagógico</h3>
+            <p id="briefing-objective" style="color: #cbd5e1; font-size: 0.92rem; line-height: 1.6;"></p>
+          </div>
+
+          <div style="margin-bottom: 1.5rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: #fff; margin-bottom: 0.5rem;">Fuente Original y Verificación Bibliográfica</h3>
+            <div id="briefing-source-box" class="scenario-source-box" style="padding: 1rem;">
+              <!-- Llenado dinámico -->
+            </div>
+          </div>
+
+          <div style="margin-bottom: 1.5rem;">
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: #fff; margin-bottom: 0.5rem;">Transparencia: Parámetros Didácticos Añadidos</h3>
+            <ul id="briefing-hypothetical-list" style="color: var(--text-muted); font-size: 0.85rem; padding-left: 1.25rem; line-height: 1.5;">
+              <!-- Llenado dinámico -->
+            </ul>
+          </div>
+        </div>
+
+        <!-- Columna Derecha: Dossier Confidencial del Exportador y Setup -->
+        <div class="briefing-sidebar">
+          <div class="dossier-box">
+            <div class="dossier-header">
+              <span style="font-size: 1.3rem;">📁</span>
+              <h3 class="dossier-title">Dossier del Exportador Peruano</h3>
+            </div>
+            <div class="dossier-item">
+              <div class="dossier-label">Empresa Exportadora</div>
+              <div id="dossier-company" class="dossier-val" style="font-weight: 700;">-</div>
+            </div>
+            <div class="dossier-item">
+              <div class="dossier-label">Estructura de Costos Directos</div>
+              <div id="dossier-cost" class="dossier-val">-</div>
+            </div>
+            <div class="dossier-item">
+              <div class="dossier-label">Precio / Valor Objetivo Deseado</div>
+              <div id="dossier-target" class="dossier-val" style="color: var(--accent-emerald); font-weight: 700;">-</div>
+            </div>
+            <div class="dossier-item">
+              <div class="dossier-label">Punto de Reserva (Límite Mínimo Aceptable)</div>
+              <div id="dossier-walkaway" class="dossier-val" style="color: #f87171; font-weight: 700;">-</div>
+            </div>
+            <div class="dossier-item">
+              <div class="dossier-label">Mejor Alternativa a un Acuerdo Negociado (MAAN / BATNA)</div>
+              <div id="dossier-batna" class="dossier-val">-</div>
+            </div>
+          </div>
+
+          <!-- Selección de Persona / Avatar del Exportador -->
+          <div class="briefing-main-card" style="padding: 1.25rem; margin-bottom: 1rem;">
+            <h4 style="font-size: 0.92rem; font-weight: 800; margin-bottom: 0.65rem; color: #fff;">Tu Identidad de Negociador Peruano</h4>
+            <div style="display: flex; gap: 0.75rem;">
+              <label style="flex: 1; display: flex; align-items: center; gap: 0.65rem; background: rgba(15,23,42,0.6); padding: 0.6rem 0.75rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); cursor: pointer;">
+                <input type="radio" name="exporter-persona" value="exporter-carlos" checked onchange="app.selectExporterPersona('exporter-carlos')">
+                <div id="briefing-avatar-carlos" class="avatar-wrapper avatar-mini"></div>
+                <div style="font-size: 0.8rem; line-height: 1.3;">
+                  <strong style="color: #fff;">Carlos Mendoza</strong>
+                  <span style="display:block; color:var(--text-dim); font-size: 0.7rem;">Director Comercial</span>
+                </div>
+              </label>
+              <label style="flex: 1; display: flex; align-items: center; gap: 0.65rem; background: rgba(15,23,42,0.6); padding: 0.6rem 0.75rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); cursor: pointer;">
+                <input type="radio" name="exporter-persona" value="exporter-sofia" onchange="app.selectExporterPersona('exporter-sofia')">
+                <div id="briefing-avatar-sofia" class="avatar-wrapper avatar-mini"></div>
+                <div style="font-size: 0.8rem; line-height: 1.3;">
+                  <strong style="color: #fff;">Sofía Quispe</strong>
+                  <span style="display:block; color:var(--text-dim); font-size: 0.7rem;">Gerente de Negocios</span>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Selección de Modalidad -->
+          <div class="briefing-main-card" style="padding: 1.5rem;">
+            <h4 style="font-size: 0.95rem; font-weight: 800; margin-bottom: 0.75rem;">Modalidad del Comprador</h4>
+            <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.25rem;">
+              <label style="display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.85rem; cursor: pointer;">
+                <input type="radio" name="simulation-mode" value="fixed_rules" checked style="margin-top: 3px;">
+                <span>
+                  <strong>Comprador con Reglas Fijas (Recomendado)</strong>
+                  <small style="display: block; color: var(--text-dim);">Motor determinista, reproducible y validado en ZOPA según normas ITC.</small>
+                </span>
+              </label>
+              <label style="display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.85rem; cursor: pointer;">
+                <input type="radio" name="simulation-mode" value="ai_assisted" style="margin-top: 3px;">
+                <span>
+                  <strong>Comprador con IA (Modelo de Lenguaje)</strong>
+                  <small style="display: block; color: var(--text-dim);">Requiere backend seguro configurado. Sin API activa opera transparentemente bajo el motor de reglas.</small>
+                </span>
+              </label>
+            </div>
+
+            <button id="btn-start-negotiation" class="btn btn-primary btn-block">
+              Iniciar Negociación ➔
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 4. VISTA: SALA DE NEGOCIACIÓN EN VIVO ========== -->
+    <section id="view-room" class="view-section">
+      <div class="room-header-bar">
+        <div class="room-meta-group">
+          <div>
+            <span id="room-scenario-badge" class="scenario-id-badge">SCN-01</span>
+            <span id="room-scenario-title" style="font-weight: 800; font-size: 1.05rem; margin-left: 0.5rem;">Nombre</span>
+          </div>
+        </div>
+
+        <div class="room-meta-group">
+          <button id="btn-room-show-harvard" class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;" onclick="app.openHarvardQuickModal()">
+            📘 Guía Harvard PON
+          </button>
+          <button id="btn-room-show-dossier" class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;" onclick="app.toggleDossierModal()">
+            📖 Ver Dossier / Costos
+          </button>
+        </div>
+      </div>
+
+      <!-- Barra de Cara a Cara (Face-Off) con Avatares Reales -->
+      <div class="room-faceoff-bar">
+        <!-- Exportador Peruano -->
+        <div class="participant-card">
+          <div id="room-exporter-avatar-container" class="avatar-wrapper avatar-med"></div>
+          <div class="participant-info">
+            <h4 id="room-exporter-name">Carlos Mendoza <span style="font-size: 0.85rem;">🇵🇪</span></h4>
+            <p id="room-exporter-company">InkaTech Solutions S.A.C.</p>
+            <span class="participant-tag">Tú (Exportador Peruano)</span>
+          </div>
+        </div>
+
+        <!-- Centro: VS y Ronda -->
+        <div class="faceoff-center">
+          <span class="vs-badge">VS</span>
+          <div class="round-tracker" style="margin-top: 0.2rem;">
+            <span style="font-size: 0.72rem; color: var(--text-muted);">RONDA:</span>
+            <span id="room-round-indicator" class="round-number">1 / 5</span>
+          </div>
+          <div id="room-mode-tag" class="mode-indicator-pill" style="font-size: 0.7rem; padding: 0.15rem 0.5rem;">
+            <span class="mode-dot"></span>
+            <span>Reglas Fijas</span>
+          </div>
+        </div>
+
+        <!-- Comprador Internacional -->
+        <div class="participant-card" style="flex-direction: row-reverse; text-align: right;">
+          <div id="room-buyer-avatar-container" class="avatar-wrapper avatar-med"></div>
+          <div class="participant-info">
+            <h4 id="room-buyer-name-header">Gonzalo Valenzuela <span id="room-buyer-flag" style="font-size: 0.85rem;">🇨🇱</span></h4>
+            <p id="room-buyer-company">Cencor Retail Group Chile</p>
+            <span class="participant-tag" style="background: rgba(99,102,241,0.2); color: #a5b4fc;">Comprador Internacional</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="room-grid">
+        <!-- Columna Izquierda: Mensajes y Chat Log -->
+        <div class="chat-column">
+          <div class="chat-column-header">
+            <div class="chat-buyer-info">
+              <div id="room-buyer-avatar" class="avatar-wrapper avatar-mini"></div>
+              <div>
+                <h4 id="room-buyer-name" style="font-size: 0.95rem; font-weight: 800; color: #fff;">Comprador</h4>
+                <span id="room-buyer-role" style="font-size: 0.75rem; color: var(--accent-cyan); display: block;">Cargo & Empresa</span>
+              </div>
+            </div>
+            <div style="font-size: 0.75rem; color: var(--text-dim);">
+              <span id="room-buyer-country-label">País</span>
+            </div>
+          </div>
+
+          <div id="chat-messages-box" class="chat-messages-container" aria-live="polite">
+            <!-- Mensajes insertados dinámicamente con avatares -->
+          </div>
+        </div>
+
+        <!-- Columna Derecha: Asistente de Propuestas por Pasos (Wizard) -->
+        <div class="controls-column">
+          <div class="offer-builder-card" id="step-wizard-card">
+            <div class="offer-builder-header">
+              <div>
+                <span class="wizard-step-badge" id="wizard-step-badge">Paso 1 de 5</span>
+                <h3 id="wizard-step-title" style="font-size: 1.05rem; font-weight: 800; color: #fff; margin-top: 0.2rem;">Evaluación de Propuesta</h3>
+              </div>
+              <span id="wizard-variable-category" class="step-category-pill">Variable Comercial</span>
+            </div>
+
+            <!-- Stepper Tabs de Navegación Rápida -->
+            <div id="wizard-stepper-tabs" class="wizard-stepper-tabs">
+              <!-- Renderizado dinámico desde app.js -->
+            </div>
+
+            <!-- Contenedor dinámico del paso activo con su contexto detallado -->
+            <div id="wizard-step-content" class="wizard-step-content">
+              <!-- Renderizado dinámico desde app.js -->
+            </div>
+
+            <!-- Barra de Navegación del Wizard -->
+            <div class="wizard-nav-footer">
+              <button id="btn-wizard-prev" class="btn btn-secondary" onclick="app.prevWizardStep()" disabled>
+                ← Paso Anterior
+              </button>
+              <div id="wizard-quick-actions" class="wizard-quick-actions">
+                <button id="btn-quick-accept" class="btn btn-success-outline" onclick="app.confirmAcceptCounterOffer()" title="Aceptar formalmente la contraoferta del comprador en mesa">
+                  ✓ Aceptar Contraoferta
+                </button>
+                <button id="btn-quick-walkaway" class="btn btn-danger-outline" onclick="app.confirmWalkaway()" title="Romper la negociación y acudir al MAAN / BATNA">
+                  ✕ Retirarse (MAAN)
+                </button>
+              </div>
+              <button id="btn-wizard-next" class="btn btn-primary" onclick="app.nextWizardStep()">
+                Siguiente Paso ➔
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== 5. VISTA: INFORME DE RESULTADOS Y EVALUACIÓN ========== -->
+    <section id="view-report" class="view-section">
+      <div class="report-header-card">
+        <div>
+          <span class="section-tag">EVALUACIÓN DE DESEMPEÑO COMERCIAL</span>
+          <h2 id="report-scenario-title" class="section-title">Informe de Negociación</h2>
+          <p id="report-outcome-status" style="font-size: 1.05rem; font-weight: 700; color: #cbd5e1; margin-top: 0.35rem;"></p>
+        </div>
+
+        <div class="report-score-box">
+          <div id="report-score-circle" class="score-circle" style="--score-pct: 75;">
+            <div class="score-circle-inner">
+              <span id="report-total-score" class="score-number">0</span>
+              <span class="score-max">/ 100 PTS</span>
+            </div>
+          </div>
+          <div>
+            <div id="report-tier-badge" class="difficulty-badge" style="font-size: 0.85rem; padding: 0.35rem 0.8rem;">Nivel de Desempeño</div>
+            <div id="report-rounds-summary" style="font-size: 0.78rem; color: var(--text-dim); margin-top: 0.4rem;">Rondas utilizadas: 0</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Desglose por Criterios -->
+      <div class="section-header">
+        <span class="section-tag">DESGLOSE ANALÍTICO</span>
+        <h3 class="section-title">Evaluación por Competencias de Negociación</h3>
+      </div>
+      <div id="criteria-grid-container" class="criteria-breakdown-grid">
+        <!-- Render dinámico desde evaluation.js -->
+      </div>
+
+      <!-- Tabla Comparativa de Concesiones -->
+      <div class="concessions-table-card">
+        <h3 style="font-size: 1.15rem; font-weight: 800; margin-bottom: 1rem; color: #fff;">
+          Evolución de Concesiones en la Mesa
+        </h3>
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Variable Negociada</th>
+                <th>Postura Inicial Exportador</th>
+                <th>Oferta Final Exportador</th>
+                <th>Concesión Exportador</th>
+                <th>Postura Inicial Comprador</th>
+                <th>Oferta Final Comprador</th>
+                <th>Concesión Comprador</th>
+              </tr>
+            </thead>
+            <tbody id="concessions-tbody">
+              <!-- Llenado dinámico -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Fortalezas y Oportunidades de Mejora -->
+      <div class="analysis-columns-grid">
+        <div class="analysis-box">
+          <h4 style="font-size: 1.05rem; font-weight: 800; color: var(--accent-emerald); display: flex; align-items: center; gap: 0.5rem;">
+            <span>✓</span> Fortalezas Demostradas
+          </h4>
+          <ul id="report-strengths-list" class="analysis-list">
+            <!-- Render dinámico -->
+          </ul>
+        </div>
+
+        <div class="analysis-box">
+          <h4 style="font-size: 1.05rem; font-weight: 800; color: var(--accent-gold); display: flex; align-items: center; gap: 0.5rem;">
+            <span>⚠️</span> Oportunidades de Mejora Táctica
+          </h4>
+          <ul id="report-improvements-list" class="analysis-list">
+            <!-- Render dinámico -->
+          </ul>
+        </div>
+      </div>
+
+      <!-- Recomendaciones Estratégicas y Referencias -->
+      <div class="analysis-box" style="margin-bottom: 2rem;">
+        <h4 style="font-size: 1.05rem; font-weight: 800; color: var(--accent-cyan); margin-bottom: 0.75rem;">
+          Recomendaciones para una Segunda Ronda (Modelo Harvard PON)
+        </h4>
+        <ul id="report-recommendations-list" class="analysis-list">
+          <!-- Render dinámico -->
+        </ul>
+
+        <div id="report-legal-ref-box" class="scenario-source-box" style="margin-top: 1.25rem;">
+          <!-- Referencia del caso -->
+        </div>
+      </div>
+
+      <!-- Acciones Finales -->
+      <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: flex-end;">
+        <button class="btn btn-secondary" onclick="window.print()">
+          🖨️ Imprimir / Guardar PDF
+        </button>
+        <button class="btn btn-secondary" onclick="app.retryCurrentScenario()">
+          🔄 Reintentar Este Escenario
+        </button>
+        <button class="btn btn-primary" onclick="app.navigateTo('catalog')">
+          Explorar Otro Escenario ➔
+        </button>
+      </div>
+    </section>
+
+    <!-- ========== 6. VISTA: BIBLIOTECA DE FUENTES Y DOCUMENTACIÓN ========== -->
+    <section id="view-sources" class="view-section">
+      <div class="section-header">
+        <span class="section-tag">INVESTIGACIÓN PREVIA OBLIGATORIA</span>
+        <h2 class="section-title">Biblioteca de Fuentes Públicas y Referencias Legales</h2>
+        <p class="section-desc">
+          Documentación de libre acceso, estudios institucionales y modelos contractuales internacionales que sustentan legal y metodológicamente los escenarios del simulador.
+        </p>
+      </div>
+
+      <div id="sources-grid-container" class="sources-grid">
+        <!-- Render dinámico de sources.js -->
+      </div>
+    </section>
+
+    <!-- ========== 7. VISTA: METODOLOGÍA HARVARD PON & HARVARD INP ========== -->
+    <section id="view-harvard" class="view-section">
+      <div class="harvard-hero">
+        <div style="max-width: 800px;">
+          <span class="section-tag" style="background: rgba(59, 130, 246, 0.2); color: #93c5fd; border: 1px solid rgba(59, 130, 246, 0.4);">
+            MARCO METODOLÓGICO CENTRAL (HARVARD INP 2022)
+          </span>
+          <h2 style="font-size: 1.85rem; font-weight: 800; color: #fff; margin: 0.5rem 0;">
+            Understanding Others through Negotiation: A Guide for Students by Students
+          </h2>
+          <p style="color: #cbd5e1; font-size: 0.95rem; line-height: 1.6;">
+            Publicación desarrollada por estudiantes e instructores del Harvard International Negotiation Program (Harvard College, Gen Ed 1033) bajo la dirección académica del <strong>Dr. Daniel L. Shapiro</strong>. Este compendio estructura los 5 pilares metodológicos aplicados en el simulador para dotar a los exportadores peruanos de habilidades racionales, emocionales y de identidad en la mesa de negociación.
+          </p>
+        </div>
+        <div style="background: rgba(15, 23, 42, 0.8); padding: 1.25rem; border-radius: var(--radius-lg); border: 1px solid var(--border-color); text-align: center;">
+          <span style="font-size: 2.2rem;">📘</span>
+          <div style="font-size: 0.82rem; font-weight: 700; color: #fff; margin-top: 0.3rem;">Harvard INP / PON</div>
+          <span style="font-size: 0.72rem; color: var(--accent-cyan);">120 Páginas de Casos y Guías</span>
+        </div>
+      </div>
+
+      <div class="section-header">
+        <span class="section-tag">ESTRUCTURA DE LOS 5 CAPÍTULOS</span>
+        <h3 class="section-title">Pilares Metodológicos Aplicados a la Exportación</h3>
+      </div>
+
+      <div id="harvard-chapters-container" class="harvard-chapters-grid">
+        <!-- Render dinámico desde harvard-framework.js -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Modal Emergente de Dossier para consulta rápida en la sala -->
+  <dialog id="dossier-quick-modal" style="background: var(--bg-card); color: #fff; border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 2rem; max-width: 600px; margin: auto; box-shadow: var(--shadow-md);">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+      <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--accent-cyan);">Dossier de Costos y Límites (Tus Notas)</h3>
+      <button class="btn btn-secondary" style="padding: 0.2rem 0.6rem;" onclick="app.toggleDossierModal()">✕</button>
+    </div>
+    <div id="quick-dossier-content" style="font-size: 0.88rem; line-height: 1.6; color: #cbd5e1;">
+      <!-- Llenado dinámico -->
+    </div>
+  </dialog>
+
+  <!-- Modal Emergente de Consulta Rápida de la Guía Harvard en la Sala -->
+  <dialog id="modal-harvard-guide" style="background: var(--bg-card); color: #fff; border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 2rem; max-width: 750px; margin: auto; box-shadow: var(--shadow-md);">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <span style="font-size: 1.4rem;">📘</span>
+        <h3 style="font-size: 1.15rem; font-weight: 800; color: #60a5fa;">Compendio Rápido: Guía Harvard PON 2022</h3>
+      </div>
+      <button class="btn btn-secondary" style="padding: 0.2rem 0.6rem;" onclick="document.getElementById('modal-harvard-guide').close()">✕</button>
+    </div>
+    <div id="quick-harvard-content" style="font-size: 0.88rem; line-height: 1.6; color: #cbd5e1; max-height: 65vh; overflow-y: auto; padding-right: 0.5rem;">
+      <!-- Llenado dinámico -->
+    </div>
+  </dialog>
+
+  <!-- Modal de Confirmación: Aceptar Contraoferta -->
+  <dialog id="modal-confirm-accept" style="background: var(--bg-card); color: #fff; border: 1px solid rgba(16,185,129,0.4); border-radius: var(--radius-xl); padding: 2rem; max-width: 520px; margin: auto; box-shadow: var(--shadow-md);">
+    <h3 style="font-size: 1.2rem; font-weight: 800; color: var(--accent-emerald); margin-bottom: 0.75rem;">
+      ¿Aceptar formalmente la contraoferta del comprador?
+    </h3>
+    <p style="font-size: 0.88rem; color: #cbd5e1; line-height: 1.5; margin-bottom: 1.25rem;">
+      Estás a punto de cerrar un <strong>acuerdo vinculante</strong> con los términos actualmente propuestos por la contraparte. Esta acción concluirá la simulación y generará tu informe de evaluación.
+    </p>
+    <div id="accept-modal-summary" style="background: rgba(15,23,42,0.6); padding: 0.85rem; border-radius: var(--radius-md); font-size: 0.82rem; margin-bottom: 1.5rem;"></div>
+    <div style="display: flex; justify-content: flex-end; gap: 0.75rem;">
+      <button class="btn btn-secondary" onclick="document.getElementById('modal-confirm-accept').close()">Cancelar y Seguir Negociando</button>
+      <button class="btn btn-success" onclick="app.executeAcceptCounterOffer()">✓ Sí, Aceptar Acuerdo</button>
+    </div>
+  </dialog>
+
+  <!-- Modal de Confirmación: Retirarse (MAAN / BATNA) -->
+  <dialog id="modal-confirm-walkaway" style="background: var(--bg-card); color: #fff; border: 1px solid rgba(239,68,68,0.4); border-radius: var(--radius-xl); padding: 2rem; max-width: 520px; margin: auto; box-shadow: var(--shadow-md);">
+    <h3 style="font-size: 1.2rem; font-weight: 800; color: #f87171; margin-bottom: 0.75rem;">
+      ¿Romper la negociación y acudir a tu MAAN / BATNA?
+    </h3>
+    <p style="font-size: 0.88rem; color: #cbd5e1; line-height: 1.5; margin-bottom: 1.25rem;">
+      Según la metodología Harvard PON, retirarse de una negociación es una <strong>decisión estratégica acertada</strong> si la contraparte insiste en condiciones por debajo de tu punto de reserva de costos.
+    </p>
+    <div style="margin-bottom: 1.25rem;">
+      <label for="walkaway-user-reason" style="display: block; font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.35rem;">
+        Justificación de la retirada (opcional):
+      </label>
+      <input type="text" id="walkaway-user-reason" class="search-input" style="width: 100%;" placeholder="Ej. El precio ofrecido no cubre costos de nómina / Pago a 60 días destruye tesorería">
+    </div>
+    <div style="display: flex; justify-content: flex-end; gap: 0.75rem;">
+      <button class="btn btn-secondary" onclick="document.getElementById('modal-confirm-walkaway').close()">Volver a la Mesa</button>
+      <button class="btn btn-danger" onclick="app.executeWalkaway()">✕ Confirmar Retirada</button>
+    </div>
+  </dialog>
+
+  <!-- Contenedor de Alertas Toast (Validación de Guardado y Envío) -->
+  <div id="toast-container" class="toast-container" aria-live="assertive"></div>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <div style="max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: gap; gap: 1rem;">
+      <div>
+        <strong>Simulador de Negociación Internacional para Exportadores Peruanos</strong> | Desarrollado para fines pedagógicos y formativos.
+      </div>
+      <div>
+        Basado en directrices de PROMPERÚ, International Trade Centre (ITC), WIPO y Harvard PON (INP 2022).
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts del Sistema -->
+  <script src="avatars.js"></script>
+  <script src="harvard-framework.js"></script>
+  <script src="sources.js"></script>
+  <script src="scenarios.js"></script>
+  <script src="negotiation-engine.js"></script>
+  <script src="evaluation.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
